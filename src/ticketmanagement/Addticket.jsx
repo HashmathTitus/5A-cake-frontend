@@ -50,7 +50,7 @@ const FeedbackModal = ({ isOpen, onClose, onFeedbackSubmitted }) => {
       await axios.post(
         `${process.env.REACT_APP_API_URL}/TicketController/Ticket`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        // { headers: { "Content-Type": "multipart/form-data" } }
       );
       Swal.fire({
         icon: "success",

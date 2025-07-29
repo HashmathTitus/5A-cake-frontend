@@ -38,7 +38,7 @@ const AboutUs = () => {
           </p>
 
           <a
-            href="https://www.facebook.com/messages/t/110952031398517"
+            href="https://www.facebook.com/share/1CQJiyTd7d/"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-pink-600 hover:bg-pink-700 text-white rounded-[24px] py-1 px-6 transition duration-300 font-courierNew inline-block"
