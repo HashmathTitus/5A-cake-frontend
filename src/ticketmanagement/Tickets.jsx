@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import bc from "../../src/components/background/bc.jpg";
 import FeedbackModal from "./Addticket.jsx";
 
@@ -13,8 +12,7 @@ const TicketList = () => {
     images: [],
     current: 0,
   });
-    const [isModalOpen, setIsModalOpen] = useState(false); // Add modal state
-  const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTickets();

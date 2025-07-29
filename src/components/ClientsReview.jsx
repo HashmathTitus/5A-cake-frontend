@@ -17,7 +17,7 @@ const ClientsReview = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/TicketController/getTicket`
+        `${process.env.REACT_APP_API_URL}TicketController/getTicket`
       );
       setReviews(Array.isArray(response.data) ? response.data : []);
     } catch (err) {

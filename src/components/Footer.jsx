@@ -5,7 +5,6 @@ import {
   Room,
   Phone,
   Email,
-  ArrowRight,
   WhatsApp,
 } from "@mui/icons-material";
 import { TimerIcon } from "lucide-react";

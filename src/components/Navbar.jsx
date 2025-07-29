@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import logo from '../../src/components/background/logo.jpg'
 import FeedbackModal from '../../src/ticketmanagement/Addticket.jsx';
 import { Link } from 'react-router-dom'; // Add this import
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 

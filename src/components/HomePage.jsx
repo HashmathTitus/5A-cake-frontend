@@ -228,7 +228,7 @@
 
 // export default HomePage;
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import img1 from "../../src/components/homepagePic/banner.jpg";
@@ -253,9 +253,6 @@ import ContactForm from "./mail";
 import FeedbackModal from "../../src/ticketmanagement/Addticket.jsx";
 import AboutUs from "../components/AboutUs.jsx";
 import OurServices from "../components/ourServices.jsx";
-import {
-  Facebook,
-} from '@mui/icons-material';
 
 const HomePage = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, speed: 10 });
