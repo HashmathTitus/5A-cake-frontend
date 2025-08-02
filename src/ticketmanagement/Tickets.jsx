@@ -93,9 +93,10 @@ const TicketList = () => {
           >
             <div className="relative" onClick={(e) => e.stopPropagation()}>
               <img
-                key={idx}
-                src={`${process.env.REACT_APP_API_URL}/uploads/${img}`}
-                alt={`ticket-img-${idx}`}
+                src={`${process.env.REACT_APP_API_URL}/uploads/${
+                  preview.images[preview.current]
+                }`}
+                alt="Preview"
                 className="max-w-[90vw] max-h-[80vh] rounded shadow-lg"
               />
               <button
@@ -152,7 +153,7 @@ const TicketList = () => {
                       {ticket.images.map((img, idx) => (
                         <img
                           key={idx}
-                          src={`http://localhost:4000/uploads/${img}`}
+                          src={`${process.env.REACT_APP_API_URL}/uploads/${img}`}
                           alt={`ticket-img-${idx}`}
                           onClick={() => openPreview(ticket.images, idx)}
                           className="w-12 h-12 object-cover rounded cursor-pointer border border-gray-400 hover:scale-105 transition"
