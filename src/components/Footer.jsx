@@ -53,8 +53,7 @@ const Footer = () => {
           <li className="flex items-center space-x-2">
             <Room fontSize="small" className="text-blue-400" />
             <span>
-              Maiden Gully Rd, Maiden Gully VIC 3551, Australia, Bendigo, VIC,
-              Australia, Victoria
+              2, Shiraz Court, Maiden Gully, Vic 3551, Australia
             </span>
           </li>
           <li className="flex items-center space-x-2">
