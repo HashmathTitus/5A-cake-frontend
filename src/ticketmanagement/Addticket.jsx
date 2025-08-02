@@ -23,8 +23,7 @@ const FeedbackModal = ({ isOpen, onClose, onFeedbackSubmitted }) => {
       newErrors.event = "Event must be at least 5 characters.";
     if (description.trim().length < 10)
       newErrors.description = "Description must be at least 10 characters.";
-    if (rating < 0.5)
-      newErrors.rating = "Please provide a rating.";
+    if (rating < 0.5) newErrors.rating = "Please provide a rating.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -49,7 +48,7 @@ const FeedbackModal = ({ isOpen, onClose, onFeedbackSubmitted }) => {
     try {
       await axios.post(
         `${process.env.REACT_APP_API_URL}/TicketController/Ticket`,
-        formData,
+        formData
         // { headers: { "Content-Type": "multipart/form-data" } }
       );
       Swal.fire({
@@ -64,6 +63,7 @@ const FeedbackModal = ({ isOpen, onClose, onFeedbackSubmitted }) => {
       Swal.fire({
         icon: "error",
         title: "Failed to submit. Try again later.",
+        text: err?.response?.data?.message || "",
         showConfirmButton: true,
       });
     }

@@ -12,7 +12,7 @@ const TicketList = () => {
     images: [],
     current: 0,
   });
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchTickets();
@@ -86,8 +86,6 @@ const TicketList = () => {
 
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
 
-        
-
         {preview.open && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
@@ -95,10 +93,9 @@ const TicketList = () => {
           >
             <div className="relative" onClick={(e) => e.stopPropagation()}>
               <img
-                src={`http://localhost:4000/uploads/${
-                  preview.images[preview.current]
-                }`}
-                alt="Preview"
+                key={idx}
+                src={`${process.env.REACT_APP_API_URL}/uploads/${img}`}
+                alt={`ticket-img-${idx}`}
                 className="max-w-[90vw] max-h-[80vh] rounded shadow-lg"
               />
               <button
@@ -186,18 +183,18 @@ const TicketList = () => {
         )}
       </div>
       <FeedbackModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onFeedbackSubmitted={fetchTickets} // Pass refresh callback
-        />
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onFeedbackSubmitted={fetchTickets} // Pass refresh callback
+      />
       <div className="flex justify-center mt-[100px] font-courierNew">
-          <button
-            className="bg-pink-900 text-white px-4 py-2 rounded-full hover:bg-pink-500 transition duration-300"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Give your Feedback !!
-          </button>
-        </div>
+        <button
+          className="bg-pink-900 text-white px-4 py-2 rounded-full hover:bg-pink-500 transition duration-300"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Give your Feedback !!
+        </button>
+      </div>
     </div>
   );
 };
