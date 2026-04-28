@@ -2,76 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+5:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Tamma:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+5:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan:wght@400;500;600;700&display=swap');  
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Tamma:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+5:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+5:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif+Caption:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Courier:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime+Code:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;500;600;700&display=swap');
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		overflow-x: hidden;
+		min-height: 100%;
+	}
+
+	body {
+		@apply bg-[#fbf7f2] text-slate-900 antialiased;
+		font-family: 'Inter', sans-serif;
+		min-height: 100vh;
+		overflow-x: hidden;
+	}
+
+	#root {
+		min-height: 100vh;
+		overflow-x: hidden;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Playfair Display', serif;
+	}
+
+	img {
+		display: block;
+	}
+
+	::selection {
+		background: #d97706;
+		color: #fff;
+	}
+}
+
+@layer components {
+	.glass-card {
+		@apply border border-white/60 bg-white/75 shadow-[0_20px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl;
+	}
+
+	.section-shell {
+		@apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+	}
+
+	.eyebrow {
+		@apply text-xs font-semibold uppercase tracking-[0.35em] text-amber-600;
+	}
+
+	.premium-button {
+		@apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2;
+	}
+
+	.premium-button-primary {
+		@apply premium-button bg-slate-900 text-white hover:bg-slate-800;
+	}
+
+	.premium-button-secondary {
+		@apply premium-button border border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50;
+	}
+}
 
