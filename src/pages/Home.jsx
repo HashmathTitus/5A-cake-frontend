@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Star, HeartHandshake, PartyPopper, CakeSlice, GlassWater } from 'lucide-react';
+import { ArrowRight, Sparkles, HeartHandshake, PartyPopper, CakeSlice, GlassWater } from 'lucide-react';
 import { feedbackAPI } from '../api/axiosClient';
 import { Loading } from '../components/common/Loading';
 import { showToast } from '../components/common/Toast';
@@ -86,12 +86,12 @@ const Home = () => {
               From intimate gatherings to full-scale receptions, 5A Events blends visual styling, warm hospitality, and polished guest experiences across every detail.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Link to="/events" className="premium-button-primary">
-                Explore Events
+              <Link to="/gallery" className="premium-button-primary">
+                Explore Gallery
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/feedback" className="premium-button-secondary !border-white/20 !bg-white/10 !text-white hover:!bg-white/20">
-                Submit Feedback
+              <Link to="/book" className="premium-button-secondary !border-white/20 !bg-white/10 !text-white hover:!bg-white/20">
+                Book Now
               </Link>
             </div>
 
@@ -219,8 +219,8 @@ const Home = () => {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-              <Link to="/events" className="premium-button-primary bg-white text-slate-900 hover:bg-amber-50">
-                Explore Events
+              <Link to="/gallery" className="premium-button-primary bg-white text-slate-900 hover:bg-amber-50">
+                Explore Gallery
               </Link>
               <Link to="/contact" className="premium-button-secondary border-white/20 bg-white/10 text-white hover:bg-white/20">
                 Contact Us

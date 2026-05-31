@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, CalendarDays, MessageSquareText, LogOut, Menu, X, Sparkles } from 'lucide-react';
+import { LayoutDashboard, CalendarDays, MessageSquareText, LogOut, Menu, X, Sparkles, ClipboardList } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { logoAsset } from '../../utils/imageAssets';
 
 const adminLinks = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/admin/events', label: 'Events', icon: CalendarDays },
-  { to: '/admin/feedback', label: 'Feedback', icon: MessageSquareText },
+  { to: '/admin/events', label: 'Gallery / Events', icon: CalendarDays },
+  { to: '/admin/inquiries', label: 'Inquiries', icon: ClipboardList },
+  { to: '/admin/feedback', label: 'Reviews', icon: MessageSquareText },
 ];
 
 export const AdminLayout = ({ title, subtitle, children }) => {

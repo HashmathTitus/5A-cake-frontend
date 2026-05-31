@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarDays, MessageSquareText, Star, ArrowRight, LayoutGrid } from 'lucide-react';
-import { eventsAPI, feedbackAPI } from '../api/axiosClient';
+import { CalendarDays, MessageSquareText, Star, ArrowRight, LayoutGrid, ClipboardList, CheckCircle2 } from 'lucide-react';
+import { eventsAPI, feedbackAPI, inquiriesAPI } from '../api/axiosClient';
 import { Loading } from '../components/common/Loading';
 import { AdminLayout } from '../components/layout/AdminLayout';
 import { showToast } from '../components/common/Toast';
@@ -9,19 +9,21 @@ import { galleryImages } from '../utils/imageAssets';
 
 const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({ events: {}, feedback: {} });
+  const [stats, setStats] = useState({ events: {}, feedback: {}, inquiries: {} });
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        const [eventStatsResponse, feedbackStatsResponse] = await Promise.all([
+        const [eventStatsResponse, feedbackStatsResponse, inquiryStatsResponse] = await Promise.all([
           eventsAPI.getStats(),
           feedbackAPI.getStats(),
+          inquiriesAPI.getStats(),
         ]);
 
         setStats({
           events: eventStatsResponse.data || {},
           feedback: feedbackStatsResponse.data || {},
+          inquiries: inquiryStatsResponse.data || {},
         });
       } catch (error) {
         showToast('Failed to load dashboard stats', 'error');
@@ -35,28 +37,40 @@ const AdminDashboard = () => {
 
   const metrics = useMemo(() => ([
     {
-      title: 'Total Events',
+      title: 'Total Gallery Items',
       value: stats.events.totalEvents ?? 0,
       icon: CalendarDays,
       tone: 'from-amber-500 to-orange-500',
     },
     {
-      title: 'Total Feedback',
-      value: stats.feedback.totalFeedback ?? 0,
-      icon: MessageSquareText,
+      title: 'Published Events',
+      value: stats.events.publishedEvents ?? 0,
+      icon: LayoutGrid,
       tone: 'from-sky-500 to-blue-600',
-    },
-    {
-      title: 'Average Rating',
-      value: Number(stats.feedback.averageRating ?? 0).toFixed(1),
-      icon: Star,
-      tone: 'from-emerald-500 to-teal-600',
     },
     {
       title: 'Completed Events',
       value: stats.events.completedEvents ?? 0,
-      icon: LayoutGrid,
+      icon: CheckCircle2,
+      tone: 'from-emerald-500 to-teal-600',
+    },
+    {
+      title: 'New Inquiries',
+      value: stats.inquiries.totalInquiries ? stats.inquiries.newInquiries ?? 0 : 0,
+      icon: ClipboardList,
       tone: 'from-slate-700 to-slate-900',
+    },
+    {
+      title: 'Pending Reviews',
+      value: stats.feedback.pendingFeedback ?? 0,
+      icon: MessageSquareText,
+      tone: 'from-rose-500 to-pink-600',
+    },
+    {
+      title: 'Published Reviews',
+      value: stats.feedback.publishedFeedback ?? 0,
+      icon: Star,
+      tone: 'from-amber-500 to-amber-600',
     },
   ]), [stats]);
 
@@ -71,7 +85,7 @@ const AdminDashboard = () => {
     >
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {metrics.map((metric) => {
               const Icon = metric.icon;
 
@@ -93,10 +107,13 @@ const AdminDashboard = () => {
               <h3 className="mt-2 text-2xl font-semibold text-slate-900">Go straight to the content teams manage most</h3>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <Link to="/admin/events" className="premium-button-primary">
-                  Manage Events <ArrowRight className="h-4 w-4" />
+                  Manage Gallery <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/admin/inquiries" className="premium-button-secondary">
+                  Manage Inquiries <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link to="/admin/feedback" className="premium-button-secondary">
-                  Manage Feedback <ArrowRight className="h-4 w-4" />
+                  Manage Reviews <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
@@ -109,21 +126,41 @@ const AdminDashboard = () => {
 
         <aside className="space-y-6">
           <div className="glass-card rounded-[2rem] p-6">
-            <p className="eyebrow">Latest feedback</p>
+            <p className="eyebrow">Recent inquiries</p>
+            <div className="mt-4 space-y-4">
+              {(stats.inquiries.recentInquiries || []).length > 0 ? stats.inquiries.recentInquiries.map((item) => (
+                <article key={item._id} className="rounded-[1.5rem] border border-slate-100 bg-white p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-semibold text-slate-900">{item.name}</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{item.eventType || 'Booking inquiry'}</p>
+                    </div>
+                    <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">{item.status || 'new'}</span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">{item.location}</p>
+                </article>
+              )) : (
+                <p className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white/70 p-4 text-sm text-slate-600">No inquiries have been submitted yet.</p>
+              )}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-[2rem] p-6">
+            <p className="eyebrow">Recent reviews</p>
             <div className="mt-4 space-y-4">
               {(stats.feedback.latestFeedback || []).length > 0 ? stats.feedback.latestFeedback.map((item) => (
                 <article key={item._id} className="rounded-[1.5rem] border border-slate-100 bg-white p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="font-semibold text-slate-900">{item.name}</p>
-                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{item.eventId?.name || 'Event feedback'}</p>
+                      <p className="font-semibold text-slate-900">{item.customerName}</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{item.eventId?.name || 'Verified review'}</p>
                     </div>
                     <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">{Number(item.rating || 0).toFixed(1)}</span>
                   </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">{item.message}</p>
                 </article>
               )) : (
-                <p className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white/70 p-4 text-sm text-slate-600">No feedback has been published yet.</p>
+                <p className="rounded-[1.5rem] border border-dashed border-slate-200 bg-white/70 p-4 text-sm text-slate-600">No reviews have been published yet.</p>
               )}
             </div>
           </div>
@@ -131,7 +168,7 @@ const AdminDashboard = () => {
           <div className="glass-card rounded-[2rem] p-6">
             <p className="eyebrow">Operational note</p>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              The dashboard is wired to live backend stats and will update as events and feedback are created or removed.
+              The dashboard is wired to live backend stats and updates as events, inquiries, and reviews change.
             </p>
           </div>
         </aside>

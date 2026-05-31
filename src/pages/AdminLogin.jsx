@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { authAPI } from '../api/axiosClient';
+import { authAPI, getApiErrorMessage } from '../api/axiosClient';
 import { showToast } from '../components/common/Toast';
 import { Spinner } from '../components/common/Loading';
 import { ShieldCheck, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { heroBannerImage, logoAsset, heroBackdropSoftImage } from '../utils/imageAssets';
+import { heroBannerImage, logoAsset } from '../utils/imageAssets';
 
 export const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -23,11 +23,11 @@ export const AdminLogin = () => {
 
     try {
       const response = await authAPI.login(email, password);
-      login(response.data.admin, response.data.token);
+      login(response.data.admin || response.data.data?.admin, response.data.token || response.data.data?.token);
       showToast('Login successful', 'success');
       navigate('/admin/dashboard');
     } catch (error) {
-      const message = error.response?.data?.error || 'Login failed';
+      const message = getApiErrorMessage(error, 'Login failed');
       setError(message);
       showToast(message, 'error');
     } finally {

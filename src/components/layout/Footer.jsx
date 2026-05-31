@@ -33,9 +33,11 @@ export const Footer = () => {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">Navigate</h4>
             <ul className="space-y-3 text-sm text-slate-300">
               <li><Link to="/" className="transition hover:text-white">Home</Link></li>
-              <li><Link to="/events" className="transition hover:text-white">Events</Link></li>
-              <li><Link to="/feedback" className="transition hover:text-white">Feedback</Link></li>
+              <li><Link to="/services" className="transition hover:text-white">Services</Link></li>
+              <li><Link to="/gallery" className="transition hover:text-white">Gallery</Link></li>
+              <li><Link to="/reviews" className="transition hover:text-white">Reviews</Link></li>
               <li><Link to="/contact" className="transition hover:text-white">Contact</Link></li>
+              <li><Link to="/book" className="transition hover:text-white">Book Now</Link></li>
             </ul>
           </div>
 

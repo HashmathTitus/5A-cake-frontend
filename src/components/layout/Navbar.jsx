@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, ShieldCheck } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Menu, Sparkles, X } from 'lucide-react';
 import { logoAsset } from '../../utils/imageAssets';
+
+const publicLinks = [
+  ['/', 'Home'],
+  ['/services', 'Services'],
+  ['/gallery', 'Gallery'],
+  ['/reviews', 'Reviews'],
+  ['/contact', 'Contact'],
+];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, admin, logout } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -20,10 +25,9 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const isHomePage = location.pathname === '/';
   const shouldUseDarkText = isScrolled || !isHomePage;
@@ -35,25 +39,20 @@ export const Navbar = () => {
           ? 'border-white/60 bg-white/85 shadow-[0_10px_40px_rgba(15,23,42,0.12)]'
           : isHomePage
             ? 'border-transparent bg-transparent shadow-none'
-            : 'border-white/40 bg-white/45 shadow-none'
+            : 'border-white/40 bg-white/80 shadow-none'
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logoAsset} alt="5A Events" className="h-11 w-11 rounded-2xl object-cover shadow-md ring-1 ring-white/20" />
-          <div>
-            <p className={`text-xs font-semibold uppercase tracking-[0.35em] ${shouldUseDarkText ? 'text-amber-600' : 'text-amber-200'}`}>5A</p>
-            <p className={`text-lg font-semibold ${shouldUseDarkText ? 'text-slate-900' : 'text-white'}`}>Cakes & Decorations</p>
+        <Link to="/" className="flex min-w-0 items-center gap-3">
+          <img src={logoAsset} alt="5A Cakes and Decorations" className="h-11 w-11 shrink-0 rounded-2xl object-cover shadow-md ring-1 ring-white/20" />
+          <div className="min-w-0">
+            <p className={`text-xs font-semibold uppercase tracking-[0.28em] ${shouldUseDarkText ? 'text-amber-600' : 'text-amber-200'}`}>5A</p>
+            <p className={`truncate text-lg font-semibold ${shouldUseDarkText ? 'text-slate-900' : 'text-white'}`}>Cakes & Decorations</p>
           </div>
         </Link>
 
         <div className="hidden items-center gap-8 lg:flex">
-          {[
-            ['/', 'Home'],
-            ['/events', 'Events'],
-            ['/feedback', 'Feedback'],
-            ['/contact', 'Contact'],
-          ].map(([to, label]) => (
+          {publicLinks.map(([to, label]) => (
             <NavLink
               key={to}
               to={to}
@@ -73,60 +72,37 @@ export const Navbar = () => {
             </NavLink>
           ))}
 
-          {isAuthenticated ? (
-            <div className="flex items-center gap-3 rounded-full border border-amber-100 bg-amber-50 px-3 py-2">
-              <ShieldCheck className="h-4 w-4 text-amber-700" />
-              <span className="text-sm font-medium text-slate-700">{admin?.email || 'Admin'}</span>
-              <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
-                <LogOut className="h-4 w-4" />
-                Logout
-              </button>
-            </div>
-          ) : (
-            <Link to="/admin/login" className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
-              Admin Login
-            </Link>
-          )}
+          <Link to="/book" className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600">
+            <Sparkles className="h-4 w-4" />
+            Book Now
+          </Link>
         </div>
 
-        <button className="rounded-2xl border border-slate-200 p-2.5 text-slate-700 lg:hidden" onClick={() => setIsOpen((value) => !value)}>
+        <button
+          className={`rounded-2xl border p-2.5 lg:hidden ${shouldUseDarkText ? 'border-slate-200 text-slate-700' : 'border-white/40 text-white'}`}
+          onClick={() => setIsOpen((value) => !value)}
+          aria-label="Toggle navigation"
+        >
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {isOpen ? (
-        <div className="border-t border-white/20 bg-white/90 px-4 py-4 text-slate-900 backdrop-blur-xl lg:hidden">
+        <div className="border-t border-white/20 bg-white/95 px-4 py-4 text-slate-900 backdrop-blur-xl lg:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-2">
-            {[
-              ['/', 'Home'],
-              ['/events', 'Events'],
-              ['/feedback', 'Feedback'],
-              ['/contact', 'Contact'],
-            ].map(([to, label]) => (
+            {publicLinks.map(([to, label]) => (
               <NavLink
                 key={to}
                 to={to}
-                onClick={() => setIsOpen(false)}
                 className={({ isActive }) => `rounded-2xl px-4 py-3 text-sm font-medium ${isActive ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-700'}`}
               >
                 {label}
               </NavLink>
             ))}
 
-            {isAuthenticated ? (
-              <>
-                <NavLink to="/admin/dashboard" onClick={() => setIsOpen(false)} className="rounded-2xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
-                  Admin Dashboard
-                </NavLink>
-                <button onClick={handleLogout} className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link to="/admin/login" onClick={() => setIsOpen(false)} className="rounded-2xl bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white">
-                Admin Login
-              </Link>
-            )}
+            <Link to="/book" className="rounded-2xl bg-amber-500 px-4 py-3 text-center text-sm font-semibold text-white">
+              Book Now
+            </Link>
           </div>
         </div>
       ) : null}

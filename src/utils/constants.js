@@ -23,12 +23,16 @@ export const SOCIAL_LINKS = {
 
 export const ROUTES = {
   home: '/',
-  events: '/events',
-  feedback: '/feedback',
-  feedbackDetail: '/feedback/:id',
+  services: '/services',
+  gallery: '/gallery',
+  galleryDetail: '/gallery/:id',
+  reviews: '/reviews',
+  feedback: '/feedback/:eventId/:token',
   contact: '/contact',
+  book: '/book',
   adminLogin: '/admin/login',
   adminDashboard: '/admin/dashboard',
   adminEvents: '/admin/events',
+  adminInquiries: '/admin/inquiries',
   adminFeedback: '/admin/feedback',
 };

@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './context/ProtectedRoute';
 import Navbar from './components/layout/Navbar';
@@ -8,12 +8,16 @@ import { ToastContainer } from './components/common/Toast';
 
 // Pages
 import Home from './pages/Home';
+import Services from './pages/Services';
 import Events from './pages/Events';
+import GalleryDetail from './pages/GalleryDetail';
 import Feedback from './pages/Feedback';
 import Contact from './pages/Contact';
+import BookNow from './pages/BookNow';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminEvents from './pages/AdminEvents';
+import AdminInquiries from './pages/AdminInquiries';
 import AdminFeedback from './pages/AdminFeedback';
 
 import 'sweetalert2/dist/sweetalert2.min.css';
@@ -31,9 +35,14 @@ function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/feedback" element={<Feedback />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/gallery" element={<Events />} />
+            <Route path="/gallery/:id" element={<GalleryDetail />} />
+            <Route path="/events" element={<Navigate to="/gallery" replace />} />
+            <Route path="/reviews" element={<Feedback />} />
+            <Route path="/feedback/:eventId/:token" element={<Feedback />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/book" element={<BookNow />} />
 
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -50,6 +59,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminEvents />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/inquiries"
+              element={
+                <ProtectedRoute>
+                  <AdminInquiries />
                 </ProtectedRoute>
               }
             />
