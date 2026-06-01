@@ -42,12 +42,12 @@ export const Navbar = () => {
             : 'border-white/40 bg-white/80 shadow-none'
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex min-w-0 items-center gap-3">
-          <img src={logoAsset} alt="5A Cakes and Decorations" className="h-11 w-11 shrink-0 rounded-2xl object-cover shadow-md ring-1 ring-white/20" />
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+        <Link to="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+          <img src={logoAsset} alt="5A Cakes and Decorations" className="h-10 w-10 shrink-0 rounded-xl object-cover shadow-md ring-1 ring-white/20 sm:h-11 sm:w-11 sm:rounded-2xl" />
           <div className="min-w-0">
-            <p className={`text-xs font-semibold uppercase tracking-[0.28em] ${shouldUseDarkText ? 'text-amber-600' : 'text-amber-200'}`}>5A</p>
-            <p className={`truncate text-lg font-semibold ${shouldUseDarkText ? 'text-slate-900' : 'text-white'}`}>Cakes & Decorations</p>
+            <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.22em] sm:text-xs sm:tracking-[0.28em] ${shouldUseDarkText ? 'text-amber-600' : 'text-amber-200'}`}>5A</p>
+            <p className={`truncate text-sm font-semibold leading-tight sm:text-lg ${shouldUseDarkText ? 'text-slate-900' : 'text-white'}`}>Cakes & Decorations</p>
           </div>
         </Link>
 
@@ -79,28 +79,29 @@ export const Navbar = () => {
         </div>
 
         <button
-          className={`rounded-2xl border p-2.5 lg:hidden ${shouldUseDarkText ? 'border-slate-200 text-slate-700' : 'border-white/40 text-white'}`}
+          className={`ml-3 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border lg:hidden ${shouldUseDarkText ? 'border-slate-200 bg-white/70 text-slate-700' : 'border-white/40 bg-slate-900/20 text-white'}`}
           onClick={() => setIsOpen((value) => !value)}
           aria-label="Toggle navigation"
+          aria-expanded={isOpen}
         >
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {isOpen ? (
-        <div className="border-t border-white/20 bg-white/95 px-4 py-4 text-slate-900 backdrop-blur-xl lg:hidden">
+        <div className="border-t border-white/20 bg-white/95 px-4 py-3 text-slate-900 shadow-[0_20px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl lg:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-2">
             {publicLinks.map(([to, label]) => (
               <NavLink
                 key={to}
                 to={to}
-                className={({ isActive }) => `rounded-2xl px-4 py-3 text-sm font-medium ${isActive ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-700'}`}
+                className={({ isActive }) => `rounded-xl px-4 py-2.5 text-sm font-medium ${isActive ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-700'}`}
               >
                 {label}
               </NavLink>
             ))}
 
-            <Link to="/book" className="rounded-2xl bg-amber-500 px-4 py-3 text-center text-sm font-semibold text-white">
+            <Link to="/book" className="rounded-xl bg-amber-500 px-4 py-2.5 text-center text-sm font-semibold text-white">
               Book Now
             </Link>
           </div>

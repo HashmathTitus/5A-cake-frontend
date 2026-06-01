@@ -8,6 +8,7 @@ import ImagePreview from '../components/common/ImagePreview';
 import { showToast } from '../components/common/Toast';
 import { AdminLayout } from '../components/layout/AdminLayout';
 import { fallbackEventImage, galleryImages } from '../utils/imageAssets';
+import { getStatusBadgeClass, getStatusLabel, statusBadgeBaseClass } from '../utils/statusStyles';
 import { getApiErrorMessage } from '../api/axiosClient';
 
 const statuses = ['all', 'pending', 'published', 'rejected', 'hidden'];
@@ -155,9 +156,23 @@ const AdminFeedback = () => {
               <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search customer name, email, or review text" className="w-full bg-transparent outline-none" />
             </label>
 
-            <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none">
-              {statuses.map((status) => <option key={status} value={status}>{status === 'all' ? 'All statuses' : status}</option>)}
-            </select>
+            <div className="grid gap-2">
+              <div className="flex flex-wrap gap-2">
+                {statuses.map((status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    onClick={() => setStatusFilter(status)}
+                    className={`${statusBadgeBaseClass} ${getStatusBadgeClass(status)} ${statusFilter === status ? 'ring-2 ring-slate-900/10' : 'opacity-75'}`}
+                  >
+                    {status === 'all' ? 'All statuses' : getStatusLabel(status)}
+                  </button>
+                ))}
+              </div>
+              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none">
+                {statuses.map((status) => <option key={status} value={status}>{status === 'all' ? 'All statuses' : getStatusLabel(status)}</option>)}
+              </select>
+            </div>
 
             <select value={filterEvent} onChange={(event) => setFilterEvent(event.target.value)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none">
               <option value="">All events</option>
@@ -187,7 +202,7 @@ const AdminFeedback = () => {
                       <p className="text-sm leading-6 text-slate-600">{feedback.message}</p>
 
                       <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                        <span className={`rounded-full px-3 py-1 ${feedback.status === 'published' ? 'bg-emerald-50 text-emerald-700' : feedback.status === 'pending' ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-600'}`}>{feedback.status}</span>
+                        <span className={`${statusBadgeBaseClass} ${getStatusBadgeClass(feedback.status)}`}>{getStatusLabel(feedback.status)}</span>
                         <span className="rounded-full bg-slate-100 px-3 py-1">{new Date(feedback.createdAt).toLocaleDateString()}</span>
                       </div>
 
@@ -279,7 +294,10 @@ const AdminFeedback = () => {
 
           <div className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">Status</label>
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <label className="block text-sm font-semibold text-slate-700">Status</label>
+                <span className={`${statusBadgeBaseClass} ${getStatusBadgeClass(formData.status)}`}>{getStatusLabel(formData.status)}</span>
+              </div>
               <select value={formData.status} onChange={(event) => setFormData({ ...formData, status: event.target.value })} className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-amber-500">
                 <option value="pending">Pending</option>
                 <option value="published">Published</option>

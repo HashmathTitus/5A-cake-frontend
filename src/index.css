@@ -47,11 +47,11 @@
 	}
 
 	.eyebrow {
-		@apply text-xs font-semibold uppercase tracking-[0.35em] text-amber-600;
+		@apply text-xs font-semibold uppercase tracking-[0.22em] text-amber-600 sm:tracking-[0.35em];
 	}
 
 	.premium-button {
-		@apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2;
+		@apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 sm:px-6 sm:py-3;
 	}
 
 	.premium-button-primary {
@@ -62,4 +62,3 @@
 		@apply premium-button border border-slate-200 bg-white text-slate-900 hover:border-slate-300 hover:bg-slate-50;
 	}
 }
-

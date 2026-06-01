@@ -24,7 +24,7 @@ export const AdminLayout = ({ title, subtitle, children }) => {
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#fffaf4_0%,#f5efe6_55%,#f7f3ef_100%)] text-slate-900">
       <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col lg:flex-row">
-        <aside className="hidden w-full max-w-[280px] border-r border-white/70 bg-white/85 px-6 py-8 shadow-[0_20px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:block">
+        <aside className="hidden min-h-screen rounded-[2rem] w-full max-w-[280px] border-r border-white/70 bg-white/85 px-6 py-8 shadow-[0_20px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:block">
           <div className="flex items-center gap-3">
             <img src={logoAsset} alt="5A Events" className="h-12 w-12 rounded-2xl object-cover shadow-md" />
             <div>

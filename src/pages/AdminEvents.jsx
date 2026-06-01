@@ -1,13 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Plus, Pencil, Trash2, Upload, Image as ImageIcon, Sparkles, Link2, CheckCircle2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, Image as ImageIcon, Sparkles, Link2, CheckCircle2, Copy, ExternalLink, MessageCircle } from 'lucide-react';
 import { eventsAPI } from '../api/axiosClient';
 import { Loading } from '../components/common/Loading';
 import Modal from '../components/common/Modal';
 import ConfirmDialog from '../components/common/ConfirmDialog';
 import ImagePreview from '../components/common/ImagePreview';
 import { showToast } from '../components/common/Toast';
+import SafeImage from '../components/common/SafeImage';
 import { AdminLayout } from '../components/layout/AdminLayout';
 import { fallbackEventImage, galleryImages } from '../utils/imageAssets';
+import { getEventCoverImage, getEventImages } from '../utils/eventImages';
+import { SOCIAL_LINKS } from '../utils/constants';
+import { getStatusBadgeClass, getStatusLabel, statusBadgeBaseClass } from '../utils/statusStyles';
 import { getApiErrorMessage } from '../api/axiosClient';
 
 const emptyForm = {
@@ -32,6 +36,8 @@ const AdminEvents = () => {
   const [previewImages, setPreviewImages] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [generatedLink, setGeneratedLink] = useState('');
+  const [linkModalOpen, setLinkModalOpen] = useState(false);
+  const [linkEventName, setLinkEventName] = useState('');
 
   useEffect(() => {
     fetchEvents();
@@ -103,17 +109,29 @@ const AdminEvents = () => {
     }
   };
 
-  const handleGenerateFeedbackLink = async (id) => {
+  const handleGenerateFeedbackLink = async (event) => {
     try {
-      const response = await eventsAPI.generateFeedbackLink(id);
+      const response = await eventsAPI.generateFeedbackLink(event._id);
       const feedbackLink = response.data.feedbackLink || response.data.data?.feedbackLink || '';
       setGeneratedLink(feedbackLink);
+      setLinkEventName(event.name || 'this event');
+      setLinkModalOpen(true);
       if (feedbackLink && navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(feedbackLink);
       }
       showToast(feedbackLink ? 'Feedback link generated and copied' : 'Feedback link generated', 'success');
     } catch (error) {
       showToast(getApiErrorMessage(error, 'Failed to generate feedback link'), 'error');
+    }
+  };
+
+  const handleCopyGeneratedLink = async () => {
+    if (!generatedLink) return;
+    try {
+      await navigator.clipboard.writeText(generatedLink);
+      showToast('Feedback link copied', 'success');
+    } catch (error) {
+      showToast('Could not copy link automatically', 'error');
     }
   };
 
@@ -166,16 +184,28 @@ const AdminEvents = () => {
         {events.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {events.map((event) => {
-              const eventImages = event.images && event.images.length > 0 ? event.images : [fallbackEventImage];
-              const eventCover = event.coverImage?.url || eventImages[0] || fallbackEventImage;
+              const eventImages = getEventImages(event);
+              const eventCover = getEventCoverImage(event);
+              const previewSet = eventImages.length > 0 ? eventImages : [fallbackEventImage];
               const canGenerateLink = event.status === 'completed' || event.visibility === 'completed';
 
               return (
                 <article key={event._id} className="glass-card overflow-hidden rounded-[2rem]">
-                  <div className="relative">
-                    <img src={eventCover} alt={event.name} className="h-56 w-full cursor-pointer object-cover" onClick={() => { setPreviewImages(eventImages); setPreviewOpen(true); }} />
-                    <span className="absolute left-4 top-4 rounded-full bg-slate-900/85 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-xl">{event.visibility || 'published'}</span>
-                    {event.featured ? <span className="absolute right-4 top-4 rounded-full bg-amber-500/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-xl">Featured</span> : null}
+                  <div className="relative h-56 w-full overflow-hidden bg-slate-100">
+                    <SafeImage
+                      src={eventCover}
+                      alt={event.name || 'Event image'}
+                      className="h-full w-full cursor-pointer object-cover"
+                      onClick={() => { setPreviewImages(previewSet); setPreviewOpen(true); }}
+                    />
+                    <span className={`absolute left-4 top-4 ${statusBadgeBaseClass} ${getStatusBadgeClass(event.visibility || 'published')} shadow-sm`}>
+                      {getStatusLabel(event.visibility || 'published')}
+                    </span>
+                    {event.featured ? (
+                      <span className={`absolute right-4 top-4 ${statusBadgeBaseClass} ${getStatusBadgeClass('featured')} shadow-sm`}>
+                        Featured
+                      </span>
+                    ) : null}
                   </div>
 
                   <div className="space-y-4 p-5">
@@ -188,6 +218,8 @@ const AdminEvents = () => {
                     </div>
 
                     <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      <span className={`rounded-full px-3 py-1 ${getStatusBadgeClass(event.status || 'upcoming')}`}>{getStatusLabel(event.status || 'upcoming')}</span>
+                      <span className={`rounded-full px-3 py-1 ${getStatusBadgeClass(event.visibility || 'published')}`}>{getStatusLabel(event.visibility || 'published')}</span>
                       <span className="rounded-full bg-slate-100 px-3 py-1">{new Date(event.date).toLocaleDateString()}</span>
                       <span className="rounded-full bg-amber-50 px-3 py-1 text-amber-700">{event.feedbackCount || 0} feedback</span>
                       <span className="rounded-full bg-sky-50 px-3 py-1 text-sky-700">{event.category || 'General'}</span>
@@ -195,8 +227,8 @@ const AdminEvents = () => {
 
                     <div className="flex items-center gap-3 overflow-x-auto pb-1">
                       {eventImages.slice(0, 3).map((image, index) => (
-                        <button key={`${event._id}-${index}`} onClick={() => { setPreviewImages(eventImages); setPreviewOpen(true); }} className="shrink-0 overflow-hidden rounded-2xl border border-slate-100">
-                          <img src={image} alt={`${event.name} preview ${index + 1}`} className="h-16 w-16 object-cover" />
+                        <button key={`${event._id}-${index}`} onClick={() => { setPreviewImages(previewSet); setPreviewOpen(true); }} className="shrink-0 overflow-hidden rounded-2xl border border-slate-100">
+                          <SafeImage src={image} alt={`${event.name} preview ${index + 1}`} className="h-16 w-16 object-cover" placeholder="No image" />
                         </button>
                       ))}
                     </div>
@@ -229,11 +261,15 @@ const AdminEvents = () => {
                         Delete
                       </button>
                       {canGenerateLink ? (
-                        <button onClick={() => handleGenerateFeedbackLink(event._id)} className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-amber-600">
+                        <button onClick={() => handleGenerateFeedbackLink(event)} className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-amber-600">
                           <Link2 className="h-4 w-4" />
-                          Feedback Link
+                          Generate Review Link
                         </button>
-                      ) : null}
+                      ) : (
+                        <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-500">
+                          Mark completed to generate review link
+                        </div>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -298,7 +334,12 @@ const AdminEvents = () => {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">Visibility</label>
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <label className="block text-sm font-semibold text-slate-700">Visibility</label>
+                  <span className={`${statusBadgeBaseClass} ${getStatusBadgeClass(formData.visibility)}`}>
+                    {getStatusLabel(formData.visibility)}
+                  </span>
+                </div>
                 <select value={formData.visibility} onChange={(event) => setFormData({ ...formData, visibility: event.target.value })} className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-amber-500">
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -311,13 +352,6 @@ const AdminEvents = () => {
                 Featured project
               </label>
             </div>
-
-            {generatedLink ? (
-              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-                <div className="flex items-center gap-2 font-semibold"><CheckCircle2 className="h-4 w-4" /> Feedback link ready</div>
-                <p className="mt-2 break-all">{generatedLink}</p>
-              </div>
-            ) : null}
 
             <button type="submit" className="premium-button-primary w-full">
               <Upload className="h-4 w-4" />
@@ -338,6 +372,43 @@ const AdminEvents = () => {
         }}
         onCancel={() => setDeleteConfirm({ open: false, id: null })}
       />
+
+      <Modal isOpen={linkModalOpen} onClose={() => setLinkModalOpen(false)} title="Feedback Link Generated" size="md">
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            <div className="flex items-center gap-2 font-semibold">
+              <CheckCircle2 className="h-4 w-4" />
+              Send this private link to the customer for {linkEventName}.
+            </div>
+            <p className="mt-2 text-emerald-800">The customer will open an event-specific feedback form and cannot choose another event.</p>
+          </div>
+
+          <label className="block">
+            <span className="mb-2 block text-sm font-semibold text-slate-700">Private review link</span>
+            <input value={generatedLink} readOnly className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 outline-none" />
+          </label>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            <button type="button" onClick={handleCopyGeneratedLink} className="premium-button-primary w-full">
+              <Copy className="h-4 w-4" />
+              Copy Link
+            </button>
+            <a href={generatedLink} target="_blank" rel="noreferrer" className="premium-button-secondary w-full">
+              <ExternalLink className="h-4 w-4" />
+              Open Link
+            </a>
+            <a
+              href={SOCIAL_LINKS.whatsapp(`Hi, thank you for choosing 5A Events. We would love to hear your feedback about your event. Please submit your review here: ${generatedLink}`)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </Modal>
 
       <ImagePreview images={previewImages} isOpen={previewOpen} onClose={() => setPreviewOpen(false)} />
     </AdminLayout>

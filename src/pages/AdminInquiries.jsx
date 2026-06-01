@@ -1,10 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Search, Trash2, PhoneCall, Mail, MessageCircle, CalendarDays, MapPin } from 'lucide-react';
+import { Search, Trash2, PhoneCall, Mail, MessageCircle, CalendarDays, MapPin, CheckCircle2, AlertCircle } from 'lucide-react';
 import { inquiriesAPI } from '../api/axiosClient';
 import { Loading } from '../components/common/Loading';
 import ConfirmDialog from '../components/common/ConfirmDialog';
+import Modal from '../components/common/Modal';
 import { showToast } from '../components/common/Toast';
 import { AdminLayout } from '../components/layout/AdminLayout';
+import {
+  cleanWhatsAppPhone,
+  getInquiryStatusBadgeClass,
+  getInquiryStatusLabel,
+  getInquiryWhatsAppUrl,
+  hasLikelyCountryCode,
+  inquiryStatusBadgeBaseClass,
+} from '../utils/inquiryNotifications';
 
 const statusOptions = ['new', 'contacted', 'confirmed', 'completed', 'cancelled'];
 
@@ -14,6 +23,7 @@ const AdminInquiries = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [deleteConfirm, setDeleteConfirm] = useState({ open: false, id: null });
+  const [notificationPrompt, setNotificationPrompt] = useState({ open: false, inquiry: null, status: '' });
 
   const fetchInquiries = useCallback(async () => {
     try {
@@ -38,12 +48,25 @@ const AdminInquiries = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await inquiriesAPI.updateStatus(id, status);
-      showToast('Inquiry status updated', 'success');
+      const response = await inquiriesAPI.updateStatus(id, status);
+      const updatedInquiry = response.data.inquiry || response.data.data?.inquiry || inquiries.find((inquiry) => inquiry._id === id);
+      setNotificationPrompt({ open: true, inquiry: updatedInquiry, status });
       fetchInquiries();
     } catch (error) {
       showToast('Failed to update inquiry status', 'error');
     }
+  };
+
+  const closeNotificationPrompt = () => setNotificationPrompt({ open: false, inquiry: null, status: '' });
+
+  const handleNotifyCustomer = () => {
+    const inquiry = notificationPrompt.inquiry;
+    if (!cleanWhatsAppPhone(inquiry?.phone)) {
+      showToast('Customer phone number is not available.', 'error');
+      return;
+    }
+
+    window.open(getInquiryWhatsAppUrl(inquiry, notificationPrompt.status), '_blank', 'noopener,noreferrer');
   };
 
   const handleDelete = async (id) => {
@@ -86,10 +109,24 @@ const AdminInquiries = () => {
               <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search name, phone, event type, or location" className="w-full bg-transparent outline-none" />
             </label>
 
-            <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none">
-              <option value="all">All statuses</option>
-              {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
-            </select>
+            <div className="grid gap-2">
+              <div className="flex flex-wrap gap-2">
+                {['all', ...statusOptions].map((status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    onClick={() => setStatusFilter(status)}
+                    className={`${inquiryStatusBadgeBaseClass} ${getInquiryStatusBadgeClass(status)} ${statusFilter === status ? 'ring-2 ring-slate-900/10' : 'opacity-75'}`}
+                  >
+                    {status === 'all' ? 'All statuses' : getInquiryStatusLabel(status)}
+                  </button>
+                ))}
+              </div>
+              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none">
+                <option value="all">All statuses</option>
+                {statusOptions.map((status) => <option key={status} value={status}>{getInquiryStatusLabel(status)}</option>)}
+              </select>
+            </div>
 
             <button onClick={() => { setSearch(''); setStatusFilter('all'); }} className="premium-button-secondary">
               Reset
@@ -106,7 +143,9 @@ const AdminInquiries = () => {
                     <p className="eyebrow">{inquiry.eventType}</p>
                     <h3 className="mt-2 text-2xl font-semibold text-slate-900">{inquiry.name}</h3>
                   </div>
-                  <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">{inquiry.status}</span>
+                  <span className={`${inquiryStatusBadgeBaseClass} ${getInquiryStatusBadgeClass(inquiry.status)}`}>
+                    {getInquiryStatusLabel(inquiry.status)}
+                  </span>
                 </div>
 
                 <div className="mt-4 grid gap-3 text-sm text-slate-600 sm:grid-cols-2">
@@ -119,12 +158,12 @@ const AdminInquiries = () => {
                 <p className="mt-4 text-sm leading-6 text-slate-600">{inquiry.message}</p>
 
                 <div className="mt-4 flex flex-wrap gap-3">
-                  <a href={`https://wa.me/${String(inquiry.phone).replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="premium-button-secondary">
+                  <a href={`https://wa.me/${cleanWhatsAppPhone(inquiry.phone)}`} target="_blank" rel="noreferrer" className="premium-button-secondary">
                     <MessageCircle className="h-4 w-4" />
                     WhatsApp
                   </a>
                   <select value={inquiry.status} onChange={(event) => updateStatus(inquiry._id, event.target.value)} className="rounded-full border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700">
-                    {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
+                    {statusOptions.map((status) => <option key={status} value={status}>{getInquiryStatusLabel(status)}</option>)}
                   </select>
                   <button onClick={() => setDeleteConfirm({ open: true, id: inquiry._id })} className="inline-flex items-center gap-2 rounded-full bg-rose-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-700">
                     <Trash2 className="h-4 w-4" />
@@ -152,6 +191,43 @@ const AdminInquiries = () => {
         }}
         onCancel={() => setDeleteConfirm({ open: false, id: null })}
       />
+
+      <Modal isOpen={notificationPrompt.open} onClose={closeNotificationPrompt} title="Status Updated" size="md">
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+            <div className="flex items-center gap-2 font-semibold">
+              <CheckCircle2 className="h-4 w-4" />
+              Inquiry status has been changed to {getInquiryStatusLabel(notificationPrompt.status)}.
+            </div>
+            <p className="mt-2 text-emerald-800">
+              Status changes are not automatically sent to customers. Notify the customer manually through WhatsApp when needed.
+            </p>
+          </div>
+
+          {notificationPrompt.inquiry ? (
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              <p><span className="font-semibold text-slate-800">Customer:</span> {notificationPrompt.inquiry.name}</p>
+              <p><span className="font-semibold text-slate-800">Phone:</span> {notificationPrompt.inquiry.phone || 'Not available'}</p>
+              {!hasLikelyCountryCode(notificationPrompt.inquiry.phone) && cleanWhatsAppPhone(notificationPrompt.inquiry.phone) ? (
+                <p className="mt-2 flex items-start gap-2 text-amber-700">
+                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                  This phone number may need a country code for WhatsApp delivery.
+                </p>
+              ) : null}
+            </div>
+          ) : null}
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <button type="button" onClick={handleNotifyCustomer} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
+              <MessageCircle className="h-4 w-4" />
+              Notify via WhatsApp
+            </button>
+            <button type="button" onClick={closeNotificationPrompt} className="premium-button-secondary w-full">
+              Close
+            </button>
+          </div>
+        </div>
+      </Modal>
     </AdminLayout>
   );
 };

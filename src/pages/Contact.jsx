@@ -41,70 +41,70 @@ const contactCards = [
 const Contact = () => {
   return (
     <div className="bg-[linear-gradient(180deg,#fbf7f2_0%,#fffaf4_100%)]">
-      <section className="section-shell pb-10 pt-24 lg:pb-14 lg:pt-28">
-        <div className="grid gap-6 overflow-hidden rounded-[2.25rem] bg-slate-900 text-white shadow-2xl lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="space-y-5 p-6 sm:p-10">
+      <section className="section-shell pb-8 pt-20 sm:pt-24 lg:pb-14 lg:pt-28">
+        <div className="grid gap-0 overflow-hidden rounded-[1.75rem] bg-slate-900 text-white shadow-2xl sm:rounded-[2.25rem] lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="space-y-4 p-5 sm:space-y-5 sm:p-10">
             <p className="eyebrow !text-amber-300">Connect with us</p>
-            <h1 className="max-w-xl text-4xl font-semibold sm:text-5xl">Let’s plan something elegant, memorable, and well coordinated.</h1>
+            <h1 className="max-w-xl text-3xl font-semibold leading-tight sm:text-5xl">Let's plan something elegant, memorable, and well coordinated.</h1>
             <p className="max-w-xl text-sm leading-7 text-white/75">
               Use your preferred channel to enquire about celebrations, book a viewing, or request a custom event concept.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-xl">
-                <p className="text-xs uppercase tracking-[0.28em] text-white/70">Fast response</p>
-                <p className="mt-1 text-xl font-semibold">Within one business day</p>
+              <div className="rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur-xl sm:p-4">
+                <p className="text-[0.68rem] uppercase tracking-[0.2em] text-white/70 sm:text-xs sm:tracking-[0.28em]">Fast response</p>
+                <p className="mt-1 text-lg font-semibold sm:text-xl">Within one business day</p>
               </div>
-              <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-xl">
-                <p className="text-xs uppercase tracking-[0.28em] text-white/70">Service style</p>
-                <p className="mt-1 text-xl font-semibold">Hospitality-first</p>
+              <div className="rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur-xl sm:p-4">
+                <p className="text-[0.68rem] uppercase tracking-[0.2em] text-white/70 sm:text-xs sm:tracking-[0.28em]">Service style</p>
+                <p className="mt-1 text-lg font-semibold sm:text-xl">Hospitality-first</p>
               </div>
             </div>
           </div>
 
-          <div className="relative min-h-[320px] overflow-hidden">
+          <div className="relative min-h-[220px] overflow-hidden sm:min-h-[280px] lg:min-h-[320px]">
             <img src={contactVisualImage} alt="Contact visual" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.1),rgba(15,23,42,0.7))]" />
-            <div className="absolute bottom-6 left-6 right-6 rounded-[1.5rem] border border-white/15 bg-white/10 p-5 text-white backdrop-blur-xl">
-              <p className="text-xs uppercase tracking-[0.28em] text-white/70">Visual direction</p>
-              <h2 className="mt-2 text-2xl font-semibold">Elegant décor, cakes, stages, and banquet layouts</h2>
+            <div className="absolute bottom-4 left-4 right-4 rounded-[1.25rem] border border-white/15 bg-white/10 p-4 text-white backdrop-blur-xl sm:bottom-6 sm:left-6 sm:right-6 sm:rounded-[1.5rem] sm:p-5">
+              <p className="text-[0.68rem] uppercase tracking-[0.2em] text-white/70 sm:text-xs sm:tracking-[0.28em]">Visual direction</p>
+              <h2 className="mt-2 text-xl font-semibold sm:text-2xl">Elegant decor, cakes, stages, and banquet layouts</h2>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section-shell pb-16 lg:pb-20">
+      <section className="section-shell pb-12 sm:pb-16 lg:pb-20">
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Preferred channels</p>
-            <h2 className="mt-2 text-3xl font-semibold text-slate-900 sm:text-4xl">Reach the team however you like</h2>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900 sm:text-4xl">Reach the team however you like</h2>
           </div>
           <Sparkles className="hidden h-8 w-8 text-amber-500 sm:block" />
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-5 xl:grid-cols-4">
           {contactCards.map((card) => {
             const Icon = card.icon;
 
             return (
-              <a key={card.title} href={card.href} target="_blank" rel="noreferrer" className="group glass-card overflow-hidden rounded-[2rem] transition hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.12)]">
-                <div className={`flex h-28 items-center justify-between bg-gradient-to-br ${card.tone} px-6 text-white`}>
-                  <Icon className="h-9 w-9" />
+              <a key={card.title} href={card.href} target="_blank" rel="noreferrer" className="group glass-card overflow-hidden rounded-[1.5rem] transition hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(15,23,42,0.12)] sm:rounded-[2rem]">
+                <div className={`flex h-20 items-center justify-between bg-gradient-to-br ${card.tone} px-5 text-white sm:h-28 sm:px-6`}>
+                  <Icon className="h-8 w-8 sm:h-9 sm:w-9" />
                   <PhoneCall className="h-5 w-5 opacity-80" />
                 </div>
-                <div className="space-y-4 p-5">
-                  <h3 className="text-2xl font-semibold text-slate-900">{card.title}</h3>
+                <div className="space-y-3 p-4 sm:space-y-4 sm:p-5">
+                  <h3 className="text-xl font-semibold text-slate-900 sm:text-2xl">{card.title}</h3>
                   <p className="text-sm leading-6 text-slate-600">{card.description}</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400 break-all">{card.meta}</p>
+                  <p className="break-all text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 sm:tracking-[0.28em]">{card.meta}</p>
                 </div>
               </a>
             );
           })}
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
           {galleryImages.slice(8, 12).map((image, index) => (
-            <div key={`${image}-${index}`} className="glass-card overflow-hidden rounded-[1.75rem]">
-              <img src={image} alt={`Contact gallery ${index + 1}`} className="h-40 w-full object-cover" />
+            <div key={`${image}-${index}`} className="glass-card overflow-hidden rounded-[1.5rem] sm:rounded-[1.75rem]">
+              <img src={image} alt={`Contact gallery ${index + 1}`} className="h-36 w-full object-cover sm:h-40" />
             </div>
           ))}
         </div>
